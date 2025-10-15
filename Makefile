@@ -1,10 +1,12 @@
-.PHONY: launcher clean
+# https://anguscheng.com/post/2023-12-12-wasm-game-in-c-raylib/
 
-launcher/app: launcher/*.c
-	gcc -o launcher/app $^ -lSDL2_image -lSDL2_ttf $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
+.PHONY: run clean
 
-launcher: launcher/app
-	./launcher/app
+build: src/*.c
+	gcc -o build $^ $(shell pkg-config --libs --cflags raylib)
+
+run: build
+	./build
 
 clean:
 	rm launcher/app
