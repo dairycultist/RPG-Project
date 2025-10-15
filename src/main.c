@@ -37,8 +37,8 @@ GameState *push_game_state() {
 
 void pop_game_state() {
 
-	if (game_states - curr_game_state == 0) {
-		// popping last element, crash
+	if (curr_game_state == game_states) {
+		// popping last element is illegal, crash
 	} else {
 		curr_game_state->destroy(curr_game_state, NULL);
 		curr_game_state--;
