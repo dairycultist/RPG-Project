@@ -1,4 +1,14 @@
 
+// GetFrameTime(); // deltaTime
+
+// custom sprites for scene backgrounds, in-scene sprites, and dialogue portraits. tilemap for world map
+
+// Camera2D camera = {0};
+// camera.zoom = 1.0f;
+// BeginMode2D(camera);
+// // draw calls
+// EndMode2D();
+
 void test_process(GameState *self, SaveState *save) {
 
 }

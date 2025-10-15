@@ -8,16 +8,10 @@
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 400
 
-#define TRUE 1
-#define FALSE 0
-
-// SaveState, which contains stuff like party info, items, and whatever (persistent between states!)
 typedef struct {
-
+	// contains data that's persistent between states/sessions (party info, items, whatever)
 } SaveState;
 
-// GameStates are pushed onto, and popped from, a (quite short) stack (abstraction :D)
-// ex. worldmap -> battle -> dialogue -> pause menu
 struct GameState {
 
 	void (*process)(struct GameState *self, SaveState *save);
@@ -29,7 +23,21 @@ struct GameState {
 };
 typedef struct GameState GameState;
 
+// GameStates are pushed onto, and popped from, a (quite short) stack (abstraction :D)
+// ex. worldmap -> battle -> dialogue -> pause menu
+GameState game_states[10];
 GameState curr_game_state;
+
+void push_game_state() {
+
+}
+
+void pop_game_state() {
+
+	if (game_states == curr_game_state) {
+		// popping last element, crash
+	}
+}
 
 // states:
 // - map.c
@@ -37,14 +45,6 @@ GameState curr_game_state;
 // - pause.c (overlaid on top of previous state; manage items/party and quit to main menu)
 // - battle.c
 // - shop.c
-
-// custom sprites for scene backgrounds, in-scene sprites, and dialogue portraits. tilemap for world map
-
-// Camera2D camera = {0};
-// camera.zoom = 1.0f;
-// BeginMode2D(camera);
-// // draw calls
-// EndMode2D();
 
 #include "test.c"
 
@@ -80,7 +80,6 @@ int main(void) {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, "RPG Project");
 	SetTargetFPS(60);
-	// GetFrameTime(); // deltaTime
 
     // screen texture
     RenderTexture2D screen_texture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -88,8 +87,6 @@ int main(void) {
 	Rectangle screen_src = { 0.0f, 0.0f, (float) SCREEN_WIDTH, -(float) SCREEN_HEIGHT }; // texture height is flipped bc OpenGL
 	Rectangle screen_dest;
 	get_window_letterbox(&screen_dest);
-
-    Vector2 screen_origin = { 0.0f, 0.0f };
 
 	// initial game state
 	create_test_game_state(&curr_game_state);
@@ -111,7 +108,7 @@ int main(void) {
 		// draw screen to window
         BeginDrawing();
 		ClearBackground(BLACK);
-		DrawTexturePro(screen_texture.texture, screen_src, screen_dest, screen_origin, 0.0f, WHITE);
+		DrawTexturePro(screen_texture.texture, screen_src, screen_dest, (Vector2) { 0.0f, 0.0f }, 0.0f, WHITE);
         EndDrawing();
     }
 
