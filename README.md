@@ -2,9 +2,9 @@
 
 https://anguscheng.com/post/2023-12-12-wasm-game-in-c-raylib/
 
-Simple roguelike NSFW RPG with dialogue, world navigation, and combat.
+Simple quirky fantasy NSFW RPG.
 
-basic save-the-princess story; each run, you attempt to descend deeper into the dungeon. no party system (enemies during combat "look out of the screen" like earthbound, since there's no point in a "face-to-face" system like pokemon if it's just you)
+Basic save-the-princess story; you're some faceless knight whose princess' crown (that gives her magical fat powers and the right to rule the kingdom) was stolen by an evil witch.
 
 states:
 - world map

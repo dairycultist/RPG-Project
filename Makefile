@@ -9,4 +9,4 @@ run: build
 	./build
 
 clean:
-	rm launcher/app
+	rm build
