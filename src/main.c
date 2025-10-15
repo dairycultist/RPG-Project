@@ -7,6 +7,9 @@
 #define SCREEN_WIDTH 600
 #define SCREEN_HEIGHT 400
 
+#define TRUE 1
+#define FALSE 0
+
 // game states are pushed onto, and popped from, a (quite short) stack
 // ex. worldmap -> battle -> dialogue -> pause menu
 // game states are internally represented as structs!!!!!! with methods!!!!!!!! abstraction!!!!!!!!!!!
@@ -16,6 +19,8 @@ struct GameState {
 	void (*process)(struct GameState *self);
 	void (*render)(struct GameState *self);
 	void *data;
+	bool renders_over_prev_state;
+
 };
 
 typedef struct GameState GameState;
@@ -37,6 +42,12 @@ typedef struct GameState GameState;
 
 #include <math.h>
 
+void recompute_letterbox(Rectangle *screen_dest) {
+
+	float virtual_ratio = (float) GetScreenWidth() / (float) SCREEN_WIDTH;
+	*screen_dest = (Rectangle) { -virtual_ratio, -virtual_ratio, GetScreenWidth() + (virtual_ratio * 2), GetScreenHeight() + (virtual_ratio * 2) };
+}
+
 int main(void) {
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -47,10 +58,9 @@ int main(void) {
     // screen texture
     RenderTexture2D screen_texture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    float virtualRatio = (float) DEFAULT_WINDOW_WIDTH / (float) SCREEN_WIDTH;
-
-    Rectangle screen_src = { 0.0f, 0.0f, (float) screen_texture.texture.width, -(float) screen_texture.texture.height }; // texture height is flipped bc OpenGL
-    Rectangle screen_dest = { -virtualRatio, -virtualRatio, DEFAULT_WINDOW_WIDTH + (virtualRatio*2), DEFAULT_WINDOW_HEIGHT + (virtualRatio*2) };
+	Rectangle screen_src = { 0.0f, 0.0f, (float) screen_texture.texture.width, -(float) screen_texture.texture.height }; // texture height is flipped bc OpenGL
+	Rectangle screen_dest;
+	recompute_letterbox(&screen_dest);
 
     Vector2 screen_origin = { 0.0f, 0.0f };
 
@@ -65,8 +75,7 @@ int main(void) {
 
 		if (IsWindowResized()) {
 
-			virtualRatio = (float) GetScreenWidth() / (float) SCREEN_WIDTH;
-			screen_dest = (Rectangle) { -virtualRatio, -virtualRatio, GetScreenWidth() + (virtualRatio * 2), GetScreenHeight() + (virtualRatio * 2) };
+			recompute_letterbox(&screen_dest);
 		}
 
         // process
