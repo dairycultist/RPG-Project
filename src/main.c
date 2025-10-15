@@ -10,11 +10,12 @@
 #define TRUE 1
 #define FALSE 0
 
-// game states are pushed onto, and popped from, a (quite short) stack
-// ex. worldmap -> battle -> dialogue -> pause menu
-// game states are internally represented as structs!!!!!! with methods!!!!!!!! abstraction!!!!!!!!!!!
+// also SaveState, which is passed to GameState as well (it contains stuff like party info, items, and whatever)
 
-struct GameState {
+// GameStates are pushed onto, and popped from, a (quite short) stack
+// ex. worldmap -> battle -> dialogue -> pause menu
+
+struct GameState { // abstraction :D
 
 	void (*process)(struct GameState *self);
 	void (*render)(struct GameState *self);
@@ -44,8 +45,29 @@ typedef struct GameState GameState;
 
 void recompute_letterbox(Rectangle *screen_dest) {
 
-	float virtual_ratio = (float) GetScreenWidth() / (float) SCREEN_WIDTH;
-	*screen_dest = (Rectangle) { -virtual_ratio, -virtual_ratio, GetScreenWidth() + (virtual_ratio * 2), GetScreenHeight() + (virtual_ratio * 2) };
+	float screen_ratio = SCREEN_HEIGHT / (float) SCREEN_WIDTH;
+	float window_ratio = GetScreenHeight() / (float) GetScreenWidth();
+
+	if (screen_ratio < window_ratio) {
+
+		*screen_dest = (Rectangle) {
+			0,
+			(GetScreenHeight() - screen_ratio * GetScreenWidth()) / 2,
+			GetScreenWidth(),
+			screen_ratio * GetScreenWidth()
+		};
+
+	} else {
+
+		screen_ratio = SCREEN_WIDTH / (float) SCREEN_HEIGHT;
+
+		*screen_dest = (Rectangle) {
+			(GetScreenWidth() - screen_ratio * GetScreenHeight()) / 2,
+			0,
+			screen_ratio * GetScreenHeight(),
+			GetScreenHeight()
+		};
+	}
 }
 
 int main(void) {
@@ -58,7 +80,7 @@ int main(void) {
     // screen texture
     RenderTexture2D screen_texture = LoadRenderTexture(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	Rectangle screen_src = { 0.0f, 0.0f, (float) screen_texture.texture.width, -(float) screen_texture.texture.height }; // texture height is flipped bc OpenGL
+	Rectangle screen_src = { 0.0f, 0.0f, (float) SCREEN_WIDTH, -(float) SCREEN_HEIGHT }; // texture height is flipped bc OpenGL
 	Rectangle screen_dest;
 	recompute_letterbox(&screen_dest);
 
@@ -90,12 +112,10 @@ int main(void) {
 
         EndTextureMode();
 
-		// draw to window
+		// draw screen to window
         BeginDrawing();
-		ClearBackground(RED);
-
+		ClearBackground(BLACK);
 		DrawTexturePro(screen_texture.texture, screen_src, screen_dest, screen_origin, 0.0f, WHITE);
-
         EndDrawing();
     }
 
