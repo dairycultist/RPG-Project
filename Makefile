@@ -2,8 +2,8 @@
 
 .PHONY: run clean
 
-build: src/*.c
-	gcc -o build $^ $(shell pkg-config --libs --cflags raylib)
+build: src/*
+	gcc -o build src/main.c $(shell pkg-config --libs --cflags raylib)
 
 run: build
 	./build

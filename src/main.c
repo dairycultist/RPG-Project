@@ -1,4 +1,5 @@
 // https://www.raylib.com/cheatsheet/cheatsheet.html
+#include <stdlib.h>
 #include "raylib.h"
 
 #define DEFAULT_WINDOW_WIDTH 600
@@ -10,28 +11,32 @@
 #define TRUE 1
 #define FALSE 0
 
-// also SaveState, which is passed to GameState as well (it contains stuff like party info, items, and whatever)
+// SaveState, which contains stuff like party info, items, and whatever (persistent between states!)
+typedef struct {
 
-// GameStates are pushed onto, and popped from, a (quite short) stack
+} SaveState;
+
+// GameStates are pushed onto, and popped from, a (quite short) stack (abstraction :D)
 // ex. worldmap -> battle -> dialogue -> pause menu
+struct GameState {
 
-struct GameState { // abstraction :D
-
-	void (*process)(struct GameState *self);
-	void (*render)(struct GameState *self);
+	void (*process)(struct GameState *self, SaveState *save);
+	void (*draw)(struct GameState *self, SaveState *save);
+	void (*destroy)(struct GameState *self, SaveState *save);
 	void *data;
-	bool renders_over_prev_state;
+	bool draws_over_prev_state;
 
 };
-
 typedef struct GameState GameState;
 
+GameState curr_game_state;
+
 // states:
-// - world map
-// - dialogue (overlaid on top of previous state; can have a character portrait + name or not)
-// - pause menu (overlaid on top of previous state; manage items/party and quit to main menu)
-// - battle
-// - shop
+// - map.c
+// - dialogue.c (overlaid on top of previous state; can have a character portrait + name or not)
+// - pause.c (overlaid on top of previous state; manage items/party and quit to main menu)
+// - battle.c
+// - shop.c
 
 // custom sprites for scene backgrounds, in-scene sprites, and dialogue portraits. tilemap for world map
 
@@ -41,9 +46,9 @@ typedef struct GameState GameState;
 // // draw calls
 // EndMode2D();
 
-#include <math.h>
+#include "test.c"
 
-void recompute_letterbox(Rectangle *screen_dest) {
+void get_window_letterbox(Rectangle *screen_dest) {
 
 	float screen_ratio = SCREEN_HEIGHT / (float) SCREEN_WIDTH;
 	float window_ratio = GetScreenHeight() / (float) GetScreenWidth();
@@ -82,34 +87,25 @@ int main(void) {
 
 	Rectangle screen_src = { 0.0f, 0.0f, (float) SCREEN_WIDTH, -(float) SCREEN_HEIGHT }; // texture height is flipped bc OpenGL
 	Rectangle screen_dest;
-	recompute_letterbox(&screen_dest);
+	get_window_letterbox(&screen_dest);
 
     Vector2 screen_origin = { 0.0f, 0.0f };
 
-	// test rect
-	Rectangle rect = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 200.0f, 200.0f };
-	Vector2 rect_origin = { 100.0f, 100.0f };
-
-    float rotation = 0.0f;
+	// initial game state
+	create_test_game_state(&curr_game_state);
 
 	// game loop
     while (!WindowShouldClose()) {
 
-		if (IsWindowResized()) {
+		if (IsWindowResized())
+			get_window_letterbox(&screen_dest);
 
-			recompute_letterbox(&screen_dest);
-		}
+        // process current state
+		curr_game_state.process(&curr_game_state, NULL);
 
-        // process
-        rotation += 60.0f * GetFrameTime();
-
-        // draw to screen
+        // draw current state to screen
         BeginTextureMode(screen_texture);
-		ClearBackground(RAYWHITE);
-
-		DrawRectanglePro(rect, rect_origin, rotation, BLACK);
-		DrawText("text", 10, 10, 20, LIGHTGRAY);
-
+		curr_game_state.draw(&curr_game_state, NULL);
         EndTextureMode();
 
 		// draw screen to window
@@ -120,6 +116,7 @@ int main(void) {
     }
 
 	// clean up
+	curr_game_state.destroy(&curr_game_state, NULL);
     UnloadRenderTexture(screen_texture);
     CloseWindow();
 
