@@ -9,11 +9,11 @@
 // // draw calls
 // EndMode2D();
 
-void test_process(GameState *self, SaveState *save) {
+void test_process(GameState *self, Save *save) {
 
 }
 
-void test_draw(GameState *self, SaveState *save) {
+void test_draw(GameState *self, Save *save) {
 
 	ClearBackground(RAYWHITE);
 
@@ -22,7 +22,7 @@ void test_draw(GameState *self, SaveState *save) {
 	DrawTexture(*(Texture2D *) self->data, 0, 0, WHITE);
 }
 
-void test_destroy(GameState *self, SaveState *save) {
+void test_destroy(GameState *self, Save *save) {
 
 	UnloadTexture(*(Texture2D *) self->data);
 }

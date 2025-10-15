@@ -10,13 +10,13 @@
 
 typedef struct {
 	// contains data that's persistent between states/sessions (party info, items, whatever)
-} SaveState;
+} Save;
 
 struct GameState {
 
-	void (*process)(struct GameState *self, SaveState *save);
-	void (*draw)(struct GameState *self, SaveState *save);
-	void (*destroy)(struct GameState *self, SaveState *save);
+	void (*process)(struct GameState *self, Save *save);
+	void (*draw)(struct GameState *self, Save *save);
+	void (*destroy)(struct GameState *self, Save *save);
 	void *data;
 	bool draws_over_prev_state;
 
@@ -26,16 +26,22 @@ typedef struct GameState GameState;
 // GameStates are pushed onto, and popped from, a (quite short) stack (abstraction :D)
 // ex. worldmap -> battle -> dialogue -> pause menu
 GameState game_states[10];
-GameState curr_game_state;
+GameState *curr_game_state = game_states;
 
-void push_game_state() {
+GameState *push_game_state() {
 
+	curr_game_state++;
+
+	return curr_game_state;
 }
 
 void pop_game_state() {
 
-	if (game_states == curr_game_state) {
+	if (game_states - curr_game_state == 0) {
 		// popping last element, crash
+	} else {
+		curr_game_state->destroy(curr_game_state, NULL);
+		curr_game_state--;
 	}
 }
 
@@ -89,7 +95,7 @@ int main(void) {
 	get_window_letterbox(&screen_dest);
 
 	// initial game state
-	create_test_game_state(&curr_game_state);
+	create_test_game_state(curr_game_state);
 
 	// game loop
     while (!WindowShouldClose()) {
@@ -98,11 +104,11 @@ int main(void) {
 			get_window_letterbox(&screen_dest);
 
         // process current state
-		curr_game_state.process(&curr_game_state, NULL);
+		curr_game_state->process(curr_game_state, NULL);
 
         // draw current state to screen
         BeginTextureMode(screen_texture);
-		curr_game_state.draw(&curr_game_state, NULL);
+		curr_game_state->draw(curr_game_state, NULL);
         EndTextureMode();
 
 		// draw screen to window
@@ -113,7 +119,7 @@ int main(void) {
     }
 
 	// clean up
-	curr_game_state.destroy(&curr_game_state, NULL);
+	curr_game_state->destroy(curr_game_state, NULL);
     UnloadRenderTexture(screen_texture);
     CloseWindow();
 
