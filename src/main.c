@@ -1,3 +1,4 @@
+// https://www.raylib.com/cheatsheet/cheatsheet.html
 #include "raylib.h"
 
 #define DEFAULT_WINDOW_WIDTH 600
@@ -10,12 +11,14 @@
 // ex. worldmap -> battle -> dialogue -> pause menu
 // game states are internally represented as structs!!!!!! with methods!!!!!!!! abstraction!!!!!!!!!!!
 
-typedef struct {
+struct GameState {
 
-	void (*process)();
-	void (*render)();
+	void (*process)(struct GameState *self);
+	void (*render)(struct GameState *self);
+	void *data;
+};
 
-} GameState;
+typedef struct GameState GameState;
 
 // states:
 // - world map
