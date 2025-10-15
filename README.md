@@ -1,32 +1,20 @@
-# RPG-engine
+# RPG Project
 
-A data-driven game engine for creating simple RPGs.
+https://anguscheng.com/post/2023-12-12-wasm-game-in-c-raylib/
 
-## Limitations
-- there's no "world map" to walk around in, so this is more of a visual novel engine but with battles/a party system
-- no party system (enemies during combat "look out of the screen" like earthbound, since there's no point in a "face-to-face" system like pokemon if it's just you)
+Simple roguelike NSFW RPG with dialogue, world navigation, and combat.
 
-## Notes
-editor and the launcher are two programs (there is confirmed a launcher since idk how I would make a cross-compatible executable)
+basic save-the-princess story; each run, you attempt to descend deeper into the dungeon. no party system (enemies during combat "look out of the screen" like earthbound, since there's no point in a "face-to-face" system like pokemon if it's just you)
 
-The game is basically just traversing a state-machine. A state can be a:
-- dialogue (can have a character portrait + name or not) (has one successor-state, for when the button is pressed to advance the dialogue)
-- choice (has multiple successor-states, depending on what choice is selected)
-- battle (has two successor-states, for when you win/lose the battle)
-- shop (has one successor-state, for when you exit the shop)
-  - shops let you buy stuff and manage your party
+states:
+- world map
+- dialogue (overlaid on top of world map; can have a character portrait + name or not)
+- pause menu (overlaid on top of world map; manage items/party)
+- battle
+- shop
 
-all the game data is stored in one file, which is saved to by the editor
-
-every asset is made in-engine (no importing, no filesystem). no tilemaps, mainly just sprites for 1) scene backgrounds 2) character in-scene sprites 3) dialogue portraits
+custom sprites for scene backgrounds, in-scene sprites, and dialogue portraits. tilemap for world map
 
 ![](https://static.wikia.nocookie.net/undertale/images/7/7d/Tem_Shop_soundtrack.png/revision/latest?cb=20151105132749)
 
 https://www.deviantart.com/shweetmagnet/art/2025-06-12-Natalie-5-1224856754
-
-steal SDL code from https://github.com/dairycultist/Berry2D/blob/main/src/window.c
-
-## Fonts
-https://www.dafont.com/vcr-osd-mono.font
-
-https://opendyslexic.org/
