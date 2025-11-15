@@ -3,10 +3,10 @@
 
 // let's start simple ok, not every feature needs to be possible
 
-#define DISPLAY_WIDTH 640
-#define DISPLAY_HEIGHT 400
-#define ROOM_WIDTH 40
-#define ROOM_HEIGHT 25
+#define DISPLAY_WIDTH 560
+#define DISPLAY_HEIGHT 320
+#define ROOM_WIDTH 35
+#define ROOM_HEIGHT 20
 #define TILE_SIZE 16
 
 typedef enum {
