@@ -52,4 +52,7 @@ void init();
 // the framework fires events for the implementer to handle, e.g. when you interact with something in the worldmap, when walk off the edge of a room, etc
 void process_event(EventType event_type, void *event_data);
 
+// for titling the window
+char *get_rpg_name();
+
 #endif

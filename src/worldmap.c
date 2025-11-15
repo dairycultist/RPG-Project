@@ -86,8 +86,7 @@ RoomID register_room_rowcol(TileID tile_ids_rowcol[ROOM_HEIGHT][ROOM_WIDTH]) {
  */
 static RoomID current_room_id;
 
-static int	worldmap_x = DISPLAY_WIDTH / 2,
-			worldmap_y = DISPLAY_HEIGHT / 2; // current position of player in room
+static int worldmap_x, worldmap_y; // current position of player's avatar in room
 
 void set_room(RoomID room_id) {
 	

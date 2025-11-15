@@ -44,3 +44,8 @@ void process_event(EventType event_type, void *event_data) {
 
 
 }
+
+char *get_rpg_name() {
+
+	return "My RPG";
+}

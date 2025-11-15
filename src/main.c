@@ -37,7 +37,7 @@ int main() {
 		return 1;
 	}
 
-	window = SDL_CreateWindow("RPG", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow(get_rpg_name(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
 
 	if (!window) {
 		printf("Error creating window:\n%s\n", SDL_GetError());
