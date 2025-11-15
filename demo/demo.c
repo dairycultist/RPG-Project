@@ -6,7 +6,7 @@ void init() {
 
 	set_scene(Worldmap);
 
-	register_tile("perversibot.png", 0);
+	register_tile("floor.png", 0);
 
 	// RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]);
 }
