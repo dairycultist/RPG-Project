@@ -15,11 +15,14 @@ typedef enum {
 
 } EventType;
 
+typedef enum { ARMOR, WEAPON, KEY, CONSUMABLE } ItemType;
+
 typedef enum { Worldmap, Battle, Shop } Scene;
 
 typedef int CharacterID;
 typedef int TileID;
 typedef int RoomID;
+typedef int ItemID;
 
 /*
  * framework-side implemented
@@ -29,13 +32,15 @@ typedef int RoomID;
 
 // queue_dialogue
 
-// register_character / spritesheet (map, battle, portrait), health, name, etc => id / used for party members, NPCs, and enemies
+CharacterID register_character(); // spritesheet (map, battle, portrait), health, name, etc => id / used for party members, NPCs, and enemies
 
 TileID register_tile(const char *sprite_filepath, int BOOL_has_collision);
 
 RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]);
 RoomID register_room_rowcol(TileID tile_ids_rowcol[ROOM_HEIGHT][ROOM_WIDTH]);
 void set_room(RoomID room_id); // sets the room that is displayed when the scene is Worldmap
+
+// ItemID register_item
 
 // void set_worldmap_avatar_character(CharacterID character_id);
 // void set_worldmap_avatar_position(int x, int y);
