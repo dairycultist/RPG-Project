@@ -57,7 +57,7 @@ int main() {
 	SDL_Event event;
 	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2};
 
-	char running = TRUE;
+	int running = TRUE;
 
 	while (running) {
 
