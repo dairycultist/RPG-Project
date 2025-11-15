@@ -76,6 +76,9 @@ int main() {
 
 	display_buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
+	// initialize
+	init();
+
 	// process events until window is closed
 	SDL_Event event;
 	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2};

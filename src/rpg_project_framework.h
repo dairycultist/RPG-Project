@@ -3,6 +3,12 @@
 
 // let's start simple ok, not every feature needs to be possible
 
+typedef enum {
+
+	INTERACT_WITH_TILE
+
+} EventType;
+
 /*
  * framework-side implemented
  */
@@ -19,7 +25,10 @@
  * game-side implemented
  */
 
-// process_event / the framework fires events for the implementer to handle, e.g. when you interact with something in the worldmap, when walk off the edge of a room, etc
-// init / runs once at the very start of a save being loaded
+// runs once at the very start of a save being loaded
+void init();
+
+// the framework fires events for the implementer to handle, e.g. when you interact with something in the worldmap, when walk off the edge of a room, etc
+void process_event(EventType event_type, void *event_data);
 
 #endif

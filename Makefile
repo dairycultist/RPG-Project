@@ -1,8 +1,8 @@
 .PHONY: run clean
 
-demo_executable: framework.o # demo/*
+demo_executable: framework.o demo/*
 	cp src/rpg_project_framework.h demo/rpg_project_framework.h
-	gcc -o demo_executable framework.o -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
+	gcc -o demo_executable framework.o demo/*.c -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
 	rm demo/rpg_project_framework.h
 
 framework.o: src/*
