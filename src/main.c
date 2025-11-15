@@ -5,27 +5,33 @@
 
 #define DISPLAY_WIDTH 640
 #define DISPLAY_HEIGHT 400
+#define ROOM_WIDTH 40
+#define ROOM_HEIGHT 25
+#define TILE_SIZE 16
 
 #define FALSE 0
 #define TRUE 1
 
+static SDL_Window *window;
+static SDL_Renderer *renderer;
+static SDL_Texture *display_buffer;
+
 typedef struct {
 	// contains data that's persistent between states/sessions (party info, current room, current position IN room, items, arbitrary data void *, etc)
 } Save;
+static Save save = { 0 };
+
+// helpers
+#include "sprite.c"
+// #include "event.c"
 
 // scene singletons
 #include "worldmap.c"
 // #include "battle.c"
 // #include "shop.c"
 
-// helpers
-#include "sprite.c"
-
-
-
-static SDL_Window *window;
-static SDL_Renderer *renderer;
-static SDL_Texture *display_buffer;
+typedef enum { Worldmap, Battle, Shop } Scene;
+static Scene current_scene = Worldmap;
 
 int main() {
 
@@ -92,6 +98,12 @@ int main() {
 		SDL_RenderClear(renderer);
 		
 		// logic/rendering to display_buffer
+		switch (current_scene) {
+			
+			case Worldmap:
+				worldmap_process();
+				break;
+		}
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer
