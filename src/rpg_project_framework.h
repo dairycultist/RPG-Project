@@ -3,11 +3,21 @@
 
 // let's start simple ok, not every feature needs to be possible
 
+#define DISPLAY_WIDTH 640
+#define DISPLAY_HEIGHT 400
+#define ROOM_WIDTH 40
+#define ROOM_HEIGHT 25
+#define TILE_SIZE 16
+
 typedef enum {
 
 	INTERACT_WITH_TILE
 
 } EventType;
+
+typedef int CharacterID;
+typedef int TileID;
+typedef int RoomID;
 
 /*
  * framework-side implemented
@@ -19,7 +29,9 @@ typedef enum {
 
 // register_character / spritesheet (map, battle, portrait), health, name, etc => id / used for party members, NPCs, and enemies
 // register_tile / sprite, has_collision => id
-// register_room / tiles[][] => id
+RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]);
+
+// void set_room(RoomID room_id);
 
 /*
  * game-side implemented

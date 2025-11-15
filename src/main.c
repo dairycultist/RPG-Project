@@ -3,12 +3,6 @@
 
 #include "rpg_project_framework.h"
 
-#define DISPLAY_WIDTH 640
-#define DISPLAY_HEIGHT 400
-#define ROOM_WIDTH 40
-#define ROOM_HEIGHT 25
-#define TILE_SIZE 16
-
 #define FALSE 0
 #define TRUE 1
 
@@ -19,7 +13,7 @@ static SDL_Texture *display_buffer;
 typedef struct {
 	// contains data that's persistent between states/sessions (party info, current room, current position IN room, items, arbitrary data void *, etc)
 } Save;
-static Save save = { 0 };
+static Save save = {};
 
 // helpers
 #include "sprite.c"
