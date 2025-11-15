@@ -52,6 +52,8 @@ static Room *room_registry;
 static int room_registry_size = 32;
 static int room_registry_next = 0;
 
+static RoomID current_room_id;
+
 RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]) {
 
 	if (!room_registry) {
@@ -70,11 +72,24 @@ RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]) {
 	return room_registry_next++;
 }
 
+void set_room(RoomID room_id) {
+	
+	current_room_id = room_id;
+}
+
 /*
  * yea
  */
 
 void worldmap_process() {
 	
-	// draw!
+	// draw the current room
+	Room *current_room = &room_registry[current_room_id];
+
+	for (int x = 0; x < ROOM_WIDTH; x++) {
+		for (int y = 0; y < ROOM_HEIGHT; y++) {
+		
+			draw_sprite(tile_registry[current_room->tile_ids[x][y]].sprite, x * TILE_SIZE, y * TILE_SIZE, FALSE);
+		}	
+	}
 }

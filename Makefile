@@ -1,5 +1,7 @@
 .PHONY: run clean
 
+# automatically copies rpg_project_framework.h into the demo directory
+# and then compiles the demo program alongside the framework object file
 demo/demo_executable: demo/framework.o demo/*.c demo/*.png
 	cp src/rpg_project_framework.h demo/rpg_project_framework.h
 	cd demo ; gcc -o demo_executable framework.o *.c -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
