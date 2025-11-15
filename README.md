@@ -1,10 +1,8 @@
 # RPG Project
 
-https://anguscheng.com/post/2023-12-12-wasm-game-in-c-raylib/
+I NEED TO MAKE AN RPG ENGINE LIKE RPGMAKER BUT WORSE!!!!!!!!!!!!
 
-Simple quirky fantasy NSFW RPG.
-
-Basic save-the-princess story; you're some faceless knight whose princess' crown (that gives her magical fat powers and the right to rule the kingdom) was stolen by an evil witch.
+![](perversibot.png)
 
 ![](https://static.wikia.nocookie.net/undertale/images/7/7d/Tem_Shop_soundtrack.png/revision/latest?cb=20151105132749)
 
