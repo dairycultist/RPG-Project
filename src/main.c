@@ -22,8 +22,12 @@ static SDL_Texture *display_buffer;
 // #include "battle.c"
 // #include "shop.c"
 
-typedef enum { Worldmap, Battle, Shop } Scene;
-static Scene current_scene = Worldmap;
+static Scene current_scene;
+
+void set_scene(Scene scene) {
+
+	current_scene = scene;
+}
 
 int main() {
 

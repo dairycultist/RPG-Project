@@ -15,6 +15,8 @@ typedef enum {
 
 } EventType;
 
+typedef enum { Worldmap, Battle, Shop } Scene;
+
 typedef int CharacterID;
 typedef int TileID;
 typedef int RoomID;
@@ -32,6 +34,8 @@ TileID register_tile(const char *sprite_filepath, int BOOL_has_collision);
 RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]);
 
 // void set_room(RoomID room_id);
+
+void set_scene(Scene scene);
 
 /*
  * game-side implemented
