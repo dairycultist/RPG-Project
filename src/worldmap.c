@@ -1,5 +1,5 @@
 /*
- * worldmap scenes are divided into single-screen rooms
+ * worldmap rooms are composed of tiles
  */
 
 typedef struct {
@@ -8,6 +8,7 @@ typedef struct {
 	int BOOL_has_collision;
 
 } Tile;
+
 static Tile *tile_registry;
 static int tile_registry_size = 256;
 static int tile_registry_next = 0;
@@ -21,7 +22,7 @@ TileID register_tile(const char *sprite_filepath, int BOOL_has_collision) {
 	} else if (tile_registry_next == tile_registry_size) {
 
 		tile_registry_size += 64;
-		tile_registry = realloc(sizeof(Tile) * tile_registry_size);
+		tile_registry = realloc(tile_registry, sizeof(Tile) * tile_registry_size);
 
 	}
 
@@ -31,10 +32,41 @@ TileID register_tile(const char *sprite_filepath, int BOOL_has_collision) {
 	return tile_registry_next++;
 }
 
+/*
+ * the worldmap is divided into single-screen rooms
+ */
+
+typedef struct {
+
+	TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT];
+
+} Room;
+
+static Room *room_registry;
+static int room_registry_size = 32;
+static int room_registry_next = 0;
+
 RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]) {
 
-	return 0;
+	if (!room_registry) {
+
+		room_registry = malloc(sizeof(Room) * room_registry_size);
+
+	} else if (room_registry_next == room_registry_size) {
+
+		room_registry_size += 64;
+		room_registry = realloc(room_registry, sizeof(Room) * room_registry_size);
+
+	}
+
+	memcpy(room_registry[room_registry_next].tile_ids, tile_ids, sizeof(TileID[ROOM_WIDTH][ROOM_HEIGHT]));
+
+	return room_registry_next++;
 }
+
+/*
+ * yea
+ */
 
 void worldmap_process() {
 	

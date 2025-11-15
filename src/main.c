@@ -10,10 +10,8 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
 
-typedef struct {
-	// contains data that's persistent between states/sessions (party info, current room, current position IN room, items, arbitrary data void *, etc)
-} Save;
-static Save save = {};
+// data that's persistent between states/sessions (party info, current room, current position IN room, items, arbitrary data void *, etc)
+// nothing rn
 
 // helpers
 #include "sprite.c"
@@ -96,6 +94,9 @@ int main() {
 			
 			case Worldmap:
 				worldmap_process();
+				break;
+
+			default:
 				break;
 		}
 
