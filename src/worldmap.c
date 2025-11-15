@@ -1,0 +1,1 @@
+// worldmap scenes are divided into rooms composed of 16x16 pixel tiles (rooms are 40x25 tiles)

@@ -3,55 +3,29 @@
 
 #include "rpg_project_framework.h"
 
-static SDL_Window *window;
-static SDL_Renderer *renderer;
-static SDL_Texture *display_buffer;
-
-#define DISPLAY_WIDTH 640 // worldmap scenes are divided into rooms composed of 16x16 pixel tiles (rooms are 40x25 tiles)
+#define DISPLAY_WIDTH 640
 #define DISPLAY_HEIGHT 400
 
 #define FALSE 0
 #define TRUE 1
 
 typedef struct {
-	// contains data that's persistent between states/sessions (party info, items, arbitrary data void *, etc)
+	// contains data that's persistent between states/sessions (party info, current room, current position IN room, items, arbitrary data void *, etc)
 } Save;
 
+// scene singletons
+#include "worldmap.c"
+// #include "battle.c"
+// #include "shop.c"
+
+// helpers
+#include "sprite.c"
 
 
-typedef struct {
 
-    void *sdl_texture;
-    int w;
-    int h;
-
-} Sprite;
-
-Sprite *load_sprite(const char *path) {
-
-	Sprite *sprite = malloc(sizeof(Sprite));
-
-	sprite->sdl_texture = IMG_LoadTexture(renderer, path);
-
-	SDL_QueryTexture(sprite->sdl_texture, NULL, NULL, &sprite->w, &sprite->h);
-
-	return sprite;
-}
-
-void draw_sprite(Sprite *sprite, int x, int y, char flip) {
-
-	SDL_Rect texture_rect = { x, y, sprite->w, sprite->h };
-
-	SDL_RenderCopyEx(renderer, sprite->sdl_texture, NULL, &texture_rect, 0.0, NULL, flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-}
-
-void free_sprite(Sprite *sprite) {
-	
-	SDL_DestroyTexture(sprite->sdl_texture);
-	free(sprite);
-}
-
-
+static SDL_Window *window;
+static SDL_Renderer *renderer;
+static SDL_Texture *display_buffer;
 
 int main() {
 

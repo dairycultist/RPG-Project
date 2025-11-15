@@ -6,7 +6,7 @@ demo_executable: framework.o demo/*
 	rm demo/rpg_project_framework.h
 
 framework.o: src/*
-	gcc -c -o framework.o src/*.c
+	gcc -c -o framework.o src/main.c
 
 run: demo_executable
 	./demo_executable
