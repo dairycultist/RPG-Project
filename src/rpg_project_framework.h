@@ -32,6 +32,7 @@ typedef int RoomID;
 // register_character / spritesheet (map, battle, portrait), health, name, etc => id / used for party members, NPCs, and enemies
 TileID register_tile(const char *sprite_filepath, int BOOL_has_collision);
 RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]);
+RoomID register_room_rowcol(TileID tile_ids_rowcol[ROOM_HEIGHT][ROOM_WIDTH]);
 
 void set_room(RoomID room_id);
 

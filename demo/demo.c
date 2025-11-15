@@ -9,7 +9,7 @@ void init() {
 	const TileID floor = register_tile("floor.png", 0);
 	const TileID wall = register_tile("wall.png", 1);
 
-	TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT] = {
+	TileID tile_ids_rowcol[ROOM_HEIGHT][ROOM_WIDTH] = {
 		0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -37,7 +37,7 @@ void init() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 	};
 
-	set_room(register_room(tile_ids));
+	set_room(register_room_rowcol(tile_ids_rowcol));
 }
 
 void process_event(EventType event_type, void *event_data) {
