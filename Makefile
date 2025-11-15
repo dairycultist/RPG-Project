@@ -1,9 +1,7 @@
-# https://anguscheng.com/post/2023-12-12-wasm-game-in-c-raylib/
-
 .PHONY: run clean
 
 build: src/*
-	gcc -o build src/main.c $(shell pkg-config --libs --cflags raylib)
+	gcc -o build src/*.c -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
 
 run: build
 	./build
