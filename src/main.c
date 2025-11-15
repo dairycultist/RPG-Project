@@ -1,19 +1,23 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "rpg_project_framework.h"
+
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
 
-#define DISPLAY_WIDTH 600
+#define DISPLAY_WIDTH 640 // worldmap scenes are divided into rooms composed of 16x16 pixel tiles (rooms are 40x25 tiles)
 #define DISPLAY_HEIGHT 400
 
 #define FALSE 0
 #define TRUE 1
 
-int main() {
+typedef struct {
+	// contains data that's persistent between states/sessions (party info, items, arbitrary data void *, etc)
+} Save;
 
-	printf("Starting RPG\n");
+int main() {
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		printf("Error initializing SDL:\n%s\n", SDL_GetError());
@@ -89,28 +93,3 @@ int main() {
 
 	return 0;
 }
-
-//600x400
-
-// framework.h
-// process_event / the framework fires events for the implementer to handle, e.g. when you interact with something in the map
-// fire_event
-// init / runs once at the very start of a save being loaded
-// frame / runs once every frame
-// set_X / a lot of stuff can be set, like the gamestate!
-
-typedef struct {
-	// contains data that's persistent between states/sessions (party info, items, whatever)
-} Save;
-
-struct GameState {
-
-	void (*process)(struct GameState *self, Save *save);
-	void (*draw)(struct GameState *self, Save *save);
-	void (*destroy)(struct GameState *self, Save *save);
-	void *data;
-	char draws_over_prev_state;
-	struct GameState *parent;
-
-};
-typedef struct GameState GameState;
