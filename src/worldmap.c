@@ -52,8 +52,6 @@ static Room *room_registry;
 static int room_registry_size = 32;
 static int room_registry_next = 0;
 
-static RoomID current_room_id;
-
 RoomID register_room(TileID tile_ids[ROOM_WIDTH][ROOM_HEIGHT]) {
 
 	if (!room_registry) {
@@ -83,14 +81,18 @@ RoomID register_room_rowcol(TileID tile_ids_rowcol[ROOM_HEIGHT][ROOM_WIDTH]) {
 	return register_room(tile_ids);
 }
 
+/*
+ * process scene
+ */
+static RoomID current_room_id;
+
+static int	worldmap_x = DISPLAY_WIDTH / 2,
+			worldmap_y = DISPLAY_HEIGHT / 2; // current position of player in room
+
 void set_room(RoomID room_id) {
 	
 	current_room_id = room_id;
 }
-
-/*
- * yea
- */
 
 void worldmap_process() {
 	

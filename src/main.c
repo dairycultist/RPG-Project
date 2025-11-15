@@ -10,17 +10,18 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
 
-// data that's persistent between states/sessions (party info, current room, current position IN room, items, arbitrary data void *, etc)
-// nothing rn
-
 // helpers
 #include "sprite.c"
+// #include "character.c"
 // #include "event.c"
 
-// scene singletons
+// singletons (contain persistent data, ones that represent scenes also have process functions)
 #include "worldmap.c"
 // #include "battle.c"
 // #include "shop.c"
+// (party info, items, arbitrary data void *, etc)
+
+// #include "save.c" // contains save() (exposed to programmer, saves all persistent data to a file) and load() (run automatically on start, loads persistent data from file)
 
 static Scene current_scene;
 
