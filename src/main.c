@@ -12,8 +12,12 @@ static SDL_Texture *display_buffer;
 
 // helpers
 #include "sprite.c"
-// #include "character.c"
 // #include "event.c"
+
+// registries
+#include "tile.c"
+#include "room.c"
+// #include "character.c"
 
 // singletons (contain persistent data, ones that represent scenes also have process functions)
 #include "worldmap.c"
