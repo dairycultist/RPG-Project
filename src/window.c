@@ -141,6 +141,8 @@ int main() {
 		draw_sprite(background, 0, 0, FALSE);
 		draw_subsprite(snivy, DISPLAY_WIDTH / 2 - 16, DISPLAY_HEIGHT / 2 - 16, 0, ((snivy_i / 4) % 8) * 32, 32, 32, FALSE);
 		draw_sprite(card, 0, DISPLAY_HEIGHT - 40, FALSE);
+		draw_sprite(card, 80, DISPLAY_HEIGHT - 40, FALSE);
+		draw_sprite(card, 160, DISPLAY_HEIGHT - 40, FALSE);
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer
