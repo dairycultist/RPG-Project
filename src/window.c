@@ -1,7 +1,9 @@
+/*
+ * window.c is a IO abstraction layer (provides a window, rendering tools, and input reports)
+ */
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
-#include "sprite.h"
 
 // to start, lets just get a character rendering and controllable (reading ALL data externally)
 
@@ -12,10 +14,56 @@
 #define FALSE 0
 #define TRUE 1
 
+/*
+ * rendering
+ */
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
 
+typedef struct {
+
+    void *sdl_texture;
+    int w;
+    int h;
+
+} Sprite;
+
+Sprite *load_sprite(const char *path) {
+
+	Sprite *sprite = malloc(sizeof(Sprite));
+
+	sprite->sdl_texture = IMG_LoadTexture(renderer, path);
+
+	SDL_QueryTexture(sprite->sdl_texture, NULL, NULL, &sprite->w, &sprite->h);
+
+	return sprite;
+}
+
+void draw_sprite(Sprite *sprite, int x, int y, int BOOL_flip) {
+
+	SDL_Rect dst_rect = { x, y, sprite->w, sprite->h };
+
+	SDL_RenderCopyEx(renderer, sprite->sdl_texture, NULL, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+}
+
+void draw_subsprite(Sprite *sprite, int x, int y, int sample_x, int sample_y, int sample_w, int sample_h, int BOOL_flip) {
+
+	SDL_Rect src_rect = { sample_x, sample_y, sample_w, sample_h };
+	SDL_Rect dst_rect = { x, y, sample_w, sample_h };
+
+	SDL_RenderCopyEx(renderer, sprite->sdl_texture, &src_rect, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+}
+
+void free_sprite(Sprite *sprite) {
+	
+	SDL_DestroyTexture(sprite->sdl_texture);
+	free(sprite);
+}
+
+/*
+ * startpoint
+ */
 int main() {
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -45,8 +93,6 @@ int main() {
 	}
 
 	// initialize
-	initialize_sprite_handler(renderer);
-
 	Sprite *snivy = load_sprite("src/Idle-Anim.png");
 
 	// process events until window is closed
@@ -87,7 +133,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 			// clear display_buffer to black
 		SDL_RenderClear(renderer);
 		
-		// TODO logic/rendering to display_buffer
+		// logic + rendering to display_buffer
 		draw_subsprite(snivy, 0, 0, 0, 0, 32, 32, FALSE);
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
