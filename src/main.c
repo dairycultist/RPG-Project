@@ -1,9 +1,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "sprite.h"
+
 // to start, lets just get a character rendering and controllable (reading ALL data externally)
 
-// screen size of GBA; PMD uses 24x24 sprites I believe
+// screen size of GBA; PMD uses 32x32 though many characters mostly fit into 24x24
 #define DISPLAY_WIDTH 240
 #define DISPLAY_HEIGHT 160
 
@@ -13,8 +15,6 @@
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
-
-#include "sprite.c"
 
 int main() {
 
@@ -39,7 +39,13 @@ int main() {
 
 	display_buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-	// TODO initialize
+	if (!display_buffer) {
+		printf("Error creating display buffer:\n%s\n", SDL_GetError());
+		return 1;
+	}
+
+	// initialize
+	initialize_sprite_handler(renderer);
 
 	// process events until window is closed
 	SDL_Event event;
