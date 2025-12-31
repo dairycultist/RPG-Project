@@ -1,7 +1,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "rpg_project_framework.h"
+// to start, lets just get a character rendering and controllable (reading ALL data externally)
+
+// screen size of GBA; PMD uses 24x24 sprites I believe
+#define DISPLAY_WIDTH 240
+#define DISPLAY_HEIGHT 160
 
 #define FALSE 0
 #define TRUE 1
@@ -10,29 +14,7 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
 
-// helpers
 #include "sprite.c"
-// #include "event.c"
-
-// registries
-#include "tile.c"
-#include "room.c"
-// #include "character.c"
-
-// singletons (contain persistent data, ones that represent scenes also have process functions)
-#include "worldmap.c"
-// #include "battle.c"
-// #include "shop.c"
-// (party info, items, arbitrary data void *, etc)
-
-// #include "save.c" // contains save() (exposed to programmer, saves all persistent data to a file) and load() (run automatically on start, loads persistent data from file)
-
-static Scene current_scene;
-
-void set_scene(Scene scene) {
-
-	current_scene = scene;
-}
 
 int main() {
 
@@ -41,7 +23,7 @@ int main() {
 		return 1;
 	}
 
-	window = SDL_CreateWindow(get_rpg_name(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("RPG", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
 
 	if (!window) {
 		printf("Error creating window:\n%s\n", SDL_GetError());
@@ -57,8 +39,7 @@ int main() {
 
 	display_buffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-	// initialize
-	init();
+	// TODO initialize
 
 	// process events until window is closed
 	SDL_Event event;
@@ -98,16 +79,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 			// clear display_buffer to black
 		SDL_RenderClear(renderer);
 		
-		// logic/rendering to display_buffer
-		switch (current_scene) {
-			
-			case Worldmap:
-				worldmap_process();
-				break;
-
-			default:
-				break;
-		}
+		// TODO logic/rendering to display_buffer
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer
