@@ -47,6 +47,8 @@ int main() {
 	// initialize
 	initialize_sprite_handler(renderer);
 
+	Sprite *snivy = load_sprite("src/Idle-Anim.png");
+
 	// process events until window is closed
 	SDL_Event event;
 	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2};
@@ -86,6 +88,7 @@ int main() {
 		SDL_RenderClear(renderer);
 		
 		// TODO logic/rendering to display_buffer
+		draw_subsprite(snivy, 0, 0, 0, 0, 32, 32, FALSE);
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer

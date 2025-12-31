@@ -1,6 +1,10 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
+// remember to include these before this:
+// #include <SDL2/SDL.h>
+// #include <SDL2/SDL_image.h>
+
 typedef struct {
 
     void *sdl_texture;
