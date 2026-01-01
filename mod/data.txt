@@ -4,6 +4,6 @@ spritesheet=snivy.png
 #end
 
 #character
-name=Charizard
-spritesheet=snivy.png
+name=Applin
+spritesheet=applin.png
 #end

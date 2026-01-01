@@ -26,8 +26,8 @@ void battle_tick() {
 
 	time++;
 	draw_sprite(background, 0, 0, FALSE);
-	draw_subsprite(characters[0]->spritesheet, DISPLAY_WIDTH / 2 - 16, DISPLAY_HEIGHT / 2 - 16, 0, ((time / 4) % 8) * 32, 32, 32, FALSE);
+	draw_subsprite(characters[0]->spritesheet, 182, 30, 0, ((time / 4) % 8) * 32, 32, 32, FALSE);
+	draw_subsprite(characters[1]->spritesheet, 182, 51, 0, ((time / 4) % 8) * 32, 32, 32, FALSE);
+	
 	draw_sprite(card, 0, DISPLAY_HEIGHT - 40, FALSE);
-	draw_sprite(card, 80, DISPLAY_HEIGHT - 40, FALSE);
-	draw_sprite(card, 160, DISPLAY_HEIGHT - 40, FALSE);
 }
