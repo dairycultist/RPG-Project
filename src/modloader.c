@@ -23,7 +23,7 @@ static int c_count;
 
 #define MAX_CHARACTERS 8
 
-#define HAS_PREFIX(str, prefix) (!strncmp(str, prefix, strlen(prefix)) == 0)
+#define HAS_PREFIX(str, prefix) (!strncmp(str, prefix, strlen(prefix)))
 
 static Character *parse_character(FILE *file) {
 
