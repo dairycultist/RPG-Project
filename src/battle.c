@@ -1,5 +1,7 @@
 #include "window.h"
 #include "battle.h"
+#include "character.h"
+#include "modloader.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -12,6 +14,9 @@ static int snivy_i;
 // to start, lets just get a character rendering and controllable (reading ALL data externally)
 
 void battle_init() {
+
+	Character **characters;
+	load_mods(characters);
 
 	background = load_sprite("src/background.png");
 	snivy = load_sprite("src/Idle-Anim.png");
