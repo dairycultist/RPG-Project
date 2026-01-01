@@ -10,34 +10,55 @@
 #include <ftw.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "window.h"
 #include "character.h"
 
-static int file_callback(const char *fpath, const struct stat *sb, int tflag, struct FTW *ftwbuf) {
+static Character **c;
+static int c_count;
 
-	if (tflag != FTW_F)
+static int file_callback(const char *fpath, const struct stat *sb, int type, struct FTW *ftwbuf) {
+
+	if (type != FTW_F)
 		return 0;
 
 	printf("> %s\n", fpath + ftwbuf->base);
+
+	c[c_count] = malloc(sizeof(Character));
+	c[c_count]->spritesheet = load_sprite("mod/snivy.png");
+	memcpy(c[c_count]->name, "Snivy", 6);
+	c_count++;
+
 	return 0;
 }
 
-void load_mods(Character ***characters) {
+void load_mods(Character ***characters, int *character_count) {
 
 	*characters = malloc(sizeof(Character *) * 8);
 
-	(*characters)[0] = malloc(sizeof(Character));
-	(*characters)[0]->spritesheet = load_sprite("mod/snivy.png");
+	// prep static buffers
+	c = *characters;
+	c_count = 0;
 
-	printf("Loaded:\n");
-	printf("  Characters:\n");
-	printf("    - Snivy\n");
-
-
-
+	// process mod files
 	if (nftw("./mod/", file_callback, 4, FTW_CHDIR)) {
 
 		printf("Something went wrong during loading!\n");
+
+	} else {
+
+		printf("Loaded:\n");
+		printf("  Characters (%d):\n", c_count);
+		
+		for (int i = 0; i < c_count; i++)
+			printf("    - %s\n", c[i]->name);
 	}
+
+	// populate output parameters
+	*characters = c;
+	*character_count = c_count;
+
+	// clear static buffers
+	c = NULL;
 }

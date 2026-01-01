@@ -10,11 +10,12 @@ static Sprite *background;
 static Sprite *card;
 static int time;
 
-static Character **characters;
+static Character **characters; // array of character pointers
+static int character_count;
 
 void battle_init() {
 
-	load_mods(&characters);
+	load_mods(&characters, &character_count);
 
 	background = load_sprite("src/background.png");
 	card = load_sprite("src/card.png");
