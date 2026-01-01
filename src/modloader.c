@@ -21,7 +21,7 @@ static int c_count;
 // includes null terminator
 #define MAX_LINE_LENGTH 80
 
-#define IS_LINE_PREFIXED_WITH(line, prefix) (strncmp(line, prefix, strlen(prefix)) == 0)
+#define HAS_PREFIX(str, prefix) (strncmp(str, prefix, strlen(prefix)) == 0)
 
 static Character *parse_character(FILE *file) {
 
@@ -29,21 +29,20 @@ static Character *parse_character(FILE *file) {
 
 	char line[MAX_LINE_LENGTH];
 
-	while (fgets(line, MAX_LINE_LENGTH, file) && !IS_LINE_PREFIXED_WITH(line, "#end")) {
+	// parse out parameters, ignoring invalid lines
+	while (fgets(line, MAX_LINE_LENGTH, file) && !HAS_PREFIX(line, "#end")) {
 
-		if (IS_LINE_PREFIXED_WITH(line, "name=")) {
+		line[strlen(line) - 1] = '\0';
 
-			printf("ONE!\n");
+		if (HAS_PREFIX(line, "name=")) {
 
-		} else if (IS_LINE_PREFIXED_WITH(line, "spritesheet=")) {
+			memcpy(character->name, line + strlen("name="), strlen(line + strlen("name=")));
 
-			printf("TWO!\n");
+		} else if (HAS_PREFIX(line, "spritesheet=")) {
+
+			character->spritesheet = load_sprite(line + strlen("spritesheet="));
 		}
-
 	}
-
-	character->spritesheet = load_sprite("mod/snivy.png");
-	memcpy(character->name, "Snivy", 6);
 
 	return character;
 }
@@ -72,7 +71,7 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 
 	while (fgets(header, MAX_LINE_LENGTH, file)) {
 
-		if (IS_LINE_PREFIXED_WITH(header, "#character")) {
+		if (HAS_PREFIX(header, "#character")) {
 
 			c[c_count] = parse_character(file);
 			c_count++;
