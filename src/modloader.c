@@ -18,17 +18,69 @@
 static Character **c;
 static int c_count;
 
+// includes null terminator
+#define MAX_LINE_LENGTH 80
+
+#define IS_LINE_PREFIXED_WITH(line, prefix) (strncmp(line, prefix, strlen(prefix)) == 0)
+
+static Character *parse_character(FILE *file) {
+
+	Character *character = malloc(sizeof(Character));
+
+	char line[MAX_LINE_LENGTH];
+
+	while (fgets(line, MAX_LINE_LENGTH, file) && !IS_LINE_PREFIXED_WITH(line, "#end")) {
+
+		if (IS_LINE_PREFIXED_WITH(line, "name=")) {
+
+			printf("ONE!\n");
+
+		} else if (IS_LINE_PREFIXED_WITH(line, "spritesheet=")) {
+
+			printf("TWO!\n");
+		}
+
+	}
+
+	character->spritesheet = load_sprite("mod/snivy.png");
+	memcpy(character->name, "Snivy", 6);
+
+	return character;
+}
+
 static int file_callback(const char *fpath, const struct stat *sb, int type, struct FTW *ftwbuf) {
 
+	// only accept files (not folders)
 	if (type != FTW_F)
 		return 0;
 
-	printf("> %s\n", fpath + ftwbuf->base);
+	const char *filename = fpath + ftwbuf->base;
+	const char *extension = strrchr(filename, '.');
 
-	c[c_count] = malloc(sizeof(Character));
-	c[c_count]->spritesheet = load_sprite("mod/snivy.png");
-	memcpy(c[c_count]->name, "Snivy", 6);
-	c_count++;
+	// only accept files with the .txt extension
+    if (!extension || extension == filename || strcmp(extension, ".txt"))
+        return 0;
+
+	// open the file for reading
+	FILE *file = fopen(filename, "r");
+
+	if (file == NULL)
+		return 0;
+
+	// parse (based on header) until EOF
+	char header[MAX_LINE_LENGTH];
+
+	while (fgets(header, MAX_LINE_LENGTH, file)) {
+
+		if (IS_LINE_PREFIXED_WITH(header, "#character")) {
+
+			c[c_count] = parse_character(file);
+			c_count++;
+		}
+	}
+
+	// close file
+	fclose(file);
 
 	return 0;
 }

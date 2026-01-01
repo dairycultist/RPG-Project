@@ -1,4 +1,4 @@
 #character
-    name: Snivy
-    spritesheet: snivy.png
+name=Snivy
+spritesheet=snivy.png
 #end
