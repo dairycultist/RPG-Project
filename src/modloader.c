@@ -23,7 +23,7 @@ static int c_count;
 
 #define MAX_CHARACTERS 8
 
-#define HAS_PREFIX(str, prefix) (strncmp(str, prefix, strlen(prefix)) == 0)
+#define HAS_PREFIX(str, prefix) (!strncmp(str, prefix, strlen(prefix)) == 0)
 
 static Character *parse_character(FILE *file) {
 
@@ -73,10 +73,8 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 
 	while (fgets(header, MAX_LINE_LENGTH, file)) {
 
-		if (HAS_PREFIX(header, "#character")) {
-
+		if (HAS_PREFIX(header, "#character"))
 			c[c_count++] = parse_character(file);
-		}
 	}
 
 	// close file
