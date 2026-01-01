@@ -2,3 +2,8 @@
 name=Snivy
 spritesheet=snivy.png
 #end
+
+#character
+name=Charizard
+spritesheet=snivy.png
+#end

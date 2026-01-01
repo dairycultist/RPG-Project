@@ -1,6 +1,6 @@
 /*
  * Searches recursively through /mod for game assets.
- * - Text files contain data detailing characters, items, attacks, etc
+ * - Text files contain data detailing characters, items, actions, etc
  * - Images are sprites which are referenced by text files
  *
  * Mods can be conveniently organized into a folder with all their assets
@@ -21,6 +21,8 @@ static int c_count;
 // includes null terminator
 #define MAX_LINE_LENGTH 80
 
+#define MAX_CHARACTERS 8
+
 #define HAS_PREFIX(str, prefix) (strncmp(str, prefix, strlen(prefix)) == 0)
 
 static Character *parse_character(FILE *file) {
@@ -29,10 +31,10 @@ static Character *parse_character(FILE *file) {
 
 	char line[MAX_LINE_LENGTH];
 
-	// parse out parameters, ignoring invalid lines
+	// parse out parameters, ignoring invalid lines, until #end
 	while (fgets(line, MAX_LINE_LENGTH, file) && !HAS_PREFIX(line, "#end")) {
 
-		line[strlen(line) - 1] = '\0';
+		line[strlen(line) - 1] = '\0'; // remove \n
 
 		if (HAS_PREFIX(line, "name=")) {
 
@@ -73,8 +75,7 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 
 		if (HAS_PREFIX(header, "#character")) {
 
-			c[c_count] = parse_character(file);
-			c_count++;
+			c[c_count++] = parse_character(file);
 		}
 	}
 
@@ -86,7 +87,7 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 
 void load_mods(Character ***characters, int *character_count) {
 
-	*characters = malloc(sizeof(Character *) * 8);
+	*characters = malloc(sizeof(Character *) * MAX_CHARACTERS);
 
 	// prep static buffers
 	c = *characters;
