@@ -1,2 +1,2 @@
-#import "window.h"
-#import "character.h"
+#include "window.h"
+#include "character.h"
