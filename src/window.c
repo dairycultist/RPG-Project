@@ -24,6 +24,14 @@ Sprite *load_sprite(const char *path) {
 
 	sprite->sdl_texture = IMG_LoadTexture(renderer, path);
 
+	if (!sprite->sdl_texture) {
+
+		printf("Could not load %s (non-fatal error)\n", path);
+		sprite->w = 0;
+		sprite->h = 0;
+		return sprite;
+	}
+
 	SDL_QueryTexture(sprite->sdl_texture, NULL, NULL, &sprite->w, &sprite->h);
 
 	return sprite;

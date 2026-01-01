@@ -1,4 +1,5 @@
 #import <stdio.h>
+#import <stdlib.h>
 
 #import "window.h"
 #import "character.h"
@@ -12,7 +13,15 @@
  * together, and may separate data into multiple text files if desired.
  */
 
-void load_mods(Character **characters) {
+void load_mods(Character ***characters) {
 
-	printf("Loading!\n");
+	*characters = malloc(sizeof(Character *) * 8);
+
+	(*characters)[0] = malloc(sizeof(Character));
+	(*characters)[0]->spritesheet = load_sprite("mod/snivy.png");
+
+	printf("Loaded:\n");
+	printf("  Characters:\n");
+	printf("    - Snivy\n");
+
 }

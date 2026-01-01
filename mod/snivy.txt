@@ -1,0 +1,4 @@
+#character
+    name: Snivy
+    spritesheet: snivy.png
+#end
