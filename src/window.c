@@ -5,11 +5,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-// to start, lets just get a character rendering and controllable (reading ALL data externally)
-
-// screen size of GBA; PMD uses 32x32 though many characters mostly fit into 24x24
-#define DISPLAY_WIDTH 240
-#define DISPLAY_HEIGHT 160
+#include "window.h"
+#include "battle.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -20,14 +17,6 @@
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
-
-typedef struct {
-
-    void *sdl_texture;
-    int w;
-    int h;
-
-} Sprite;
 
 Sprite *load_sprite(const char *path) {
 
@@ -93,10 +82,7 @@ int main() {
 	}
 
 	// initialize
-	Sprite *background = load_sprite("src/background.png");
-	Sprite *snivy = load_sprite("src/Idle-Anim.png");
-	Sprite *card = load_sprite("src/card.png");
-	int snivy_i = 0;
+	battle_init();
 
 	// process events until window is closed
 	SDL_Event event;
@@ -136,13 +122,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 			// clear display_buffer to black
 		SDL_RenderClear(renderer);
 		
-		// logic + rendering to display_buffer
-		snivy_i++;
-		draw_sprite(background, 0, 0, FALSE);
-		draw_subsprite(snivy, DISPLAY_WIDTH / 2 - 16, DISPLAY_HEIGHT / 2 - 16, 0, ((snivy_i / 4) % 8) * 32, 32, 32, FALSE);
-		draw_sprite(card, 0, DISPLAY_HEIGHT - 40, FALSE);
-		draw_sprite(card, 80, DISPLAY_HEIGHT - 40, FALSE);
-		draw_sprite(card, 160, DISPLAY_HEIGHT - 40, FALSE);
+		battle_tick();												// logic + rendering to display_buffer
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer
