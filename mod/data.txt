@@ -1,4 +1,4 @@
 #character
-name=Isabelle
-spritesheet=isabelle.png
+name=Maisel
+spritesheet=maisel.png
 #end
