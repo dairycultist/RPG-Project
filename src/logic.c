@@ -21,5 +21,5 @@ void logic_init() {
 void logic_tick() {
 
 	time++;
-	draw_subsprite(characters[0]->spritesheet, 10, 10, 0, 0, 512, 512, FALSE);
+	draw_character(10, 10, characters[0], 0, EMOTION_DEFAULT);
 }
