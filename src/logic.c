@@ -18,6 +18,8 @@ void logic_init() {
 
 void logic_tick(const unsigned long time) {
 
+	// toppings
+
 	draw_character(10, 10, characters[0], 1, EMOTION_NEUTRAL);
 }
 
