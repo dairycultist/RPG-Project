@@ -9,9 +9,8 @@ typedef struct {
 
 } Sprite;
 
-// screen size of GBA; PMD uses 32x32 though many characters mostly fit into 24x24
-#define DISPLAY_WIDTH 240
-#define DISPLAY_HEIGHT 160
+#define DISPLAY_WIDTH 1280
+#define DISPLAY_HEIGHT 720
 
 Sprite *load_sprite(const char *path);
 void draw_sprite(Sprite *sprite, int x, int y, int BOOL_flip);

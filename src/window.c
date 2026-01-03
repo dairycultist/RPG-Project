@@ -6,7 +6,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "window.h"
-#include "battle.h"
+#include "logic.h"
 
 #define FALSE 0
 #define TRUE 1
@@ -68,7 +68,7 @@ int main() {
 		return 1;
 	}
 
-	window = SDL_CreateWindow("Battle Simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("Feederia", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_RESIZABLE);
 
 	if (!window) {
 		printf("Error creating window:\n%s\n", SDL_GetError());
@@ -90,11 +90,11 @@ int main() {
 	}
 
 	// initialize
-	battle_init();
+	logic_init();
 
 	// process events until window is closed
 	SDL_Event event;
-	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2};
+	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT};
 
 	int running = TRUE;
 
@@ -130,7 +130,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 			// clear display_buffer to black
 		SDL_RenderClear(renderer);
 		
-		battle_tick();												// logic + rendering to display_buffer
+		logic_tick();												// logic + rendering to display_buffer
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer
