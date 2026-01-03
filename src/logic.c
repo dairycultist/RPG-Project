@@ -18,7 +18,7 @@ void logic_init() {
 
 void logic_tick(const unsigned long time) {
 
-	draw_character(10, 10, characters[0], 0, EMOTION_NEUTRAL);
+	draw_character(10, 10, characters[0], 1, EMOTION_NEUTRAL);
 }
 
 void logic_click(const int x, const int y) {
