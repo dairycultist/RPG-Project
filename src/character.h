@@ -3,7 +3,7 @@
 
 #define CHARACTER_MAX_NAME_LEN 20
 
-#define EMOTION_DEFAULT 0
+#define EMOTION_NEUTRAL 0
 
 typedef struct {
 

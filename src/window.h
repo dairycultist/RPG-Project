@@ -1,6 +1,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#define DISPLAY_WIDTH 1280
+#define DISPLAY_HEIGHT 720
+
 typedef struct {
 
     void *sdl_texture;
@@ -8,9 +11,6 @@ typedef struct {
     int h;
 
 } Sprite;
-
-#define DISPLAY_WIDTH 1280
-#define DISPLAY_HEIGHT 720
 
 Sprite *load_sprite(const char *path);
 void draw_sprite(Sprite *sprite, int x, int y, int BOOL_flip);

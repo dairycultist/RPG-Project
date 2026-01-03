@@ -1,9 +1,4 @@
 #character
-name=Snivy
-spritesheet=tst.png
-#end
-
-#character
-name=Applin
-spritesheet=tst.png
+name=Isabelle
+spritesheet=isabelle.png
 #end
