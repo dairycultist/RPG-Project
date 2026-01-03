@@ -96,6 +96,7 @@ int main() {
 	SDL_Event event;
 	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT};
 
+	unsigned long time = 0;
 	int running = TRUE;
 
 	while (running) {
@@ -117,10 +118,13 @@ int main() {
 				letterbox.x = (event.window.data1 - letterbox.w) / 2;
 				letterbox.y = (event.window.data2 - letterbox.h) / 2;
 
-			} else if ((event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) && !event.key.repeat) {
+			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+				
+				int x = (event.button.x - letterbox.x) * DISPLAY_WIDTH / letterbox.w;
+				int y = (event.button.y - letterbox.y) * DISPLAY_HEIGHT / letterbox.h;
 
-				// event.key.keysym.scancode
-				// SDL_SCANCODE_UP
+				if (x >= 0 && x < DISPLAY_WIDTH && y >= 0 && y < DISPLAY_HEIGHT)
+					logic_click(x, y);
 			}
 		}
 
@@ -130,7 +134,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 			// clear display_buffer to black
 		SDL_RenderClear(renderer);
 		
-		logic_tick();												// logic + rendering to display_buffer
+		logic_tick(time++);											// logic + rendering to display_buffer
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer
