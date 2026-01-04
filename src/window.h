@@ -17,4 +17,7 @@ void draw_sprite(Sprite *sprite, int x, int y, int BOOL_flip);
 void draw_subsprite(Sprite *sprite, int x, int y, int sample_x, int sample_y, int sample_w, int sample_h, int BOOL_flip);
 void free_sprite(Sprite *sprite);
 
+void draw_text(int x, int y, const char *string);
+void draw_text_centered(int x, int y, const char *string);
+
 #endif

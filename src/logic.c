@@ -26,7 +26,9 @@ void logic_tick(const unsigned long time) {
 
 	draw_character(10, 10, characters[0], (time / 100) % 3, EMOTION_NEUTRAL);
 
-	draw_sprite(waffle_cone, 0, 0, FALSE);
+	draw_sprite(waffle_cone, 450, 300, FALSE);
+
+	draw_text(10, 600, "test text!");
 }
 
 void logic_click(const int x, const int y) {

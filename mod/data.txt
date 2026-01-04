@@ -1,4 +1,14 @@
 #character
 name=Maisel
 spritesheet=maisel.png
+greet=generic
+pass=generic
+fail=generic
+#end
+
+#dialogue
+name=generic
+Yummy ice cream!
+I like waffles!
+Hallo! ^w^
 #end

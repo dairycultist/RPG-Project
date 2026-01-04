@@ -1,7 +1,7 @@
 .PHONY: run clean
 
 demo: src/*
-	gcc -o demo src/*.c -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
+	gcc -o demo src/*.c -lSDL2_image -lSDL2_ttf $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
 
 run: demo
 	./demo

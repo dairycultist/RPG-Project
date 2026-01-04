@@ -4,6 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "window.h"
 #include "logic.h"
@@ -11,9 +12,12 @@
 #define FALSE 0
 #define TRUE 1
 
+#define FONT_FILENAME "src/vcr_osd_mono.ttf"
+
 /*
  * rendering
  */
+static TTF_Font* font;
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
@@ -58,6 +62,30 @@ void free_sprite(Sprite *sprite) {
 	free(sprite);
 }
 
+void draw_text(int x, int y, const char *string) {
+
+	static SDL_Color white = { 255, 255, 255 };
+
+	SDL_Surface* text_surface = TTF_RenderText_Blended(font, string, white);
+	SDL_Texture* text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+
+	SDL_Rect text_rect = { x, y };
+	TTF_SizeText(font, string, &text_rect.w, &text_rect.h);
+
+	SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
+
+	SDL_FreeSurface(text_surface);
+	SDL_DestroyTexture(text_texture);
+}
+
+void draw_text_centered(int x, int y, const char *string) {
+
+	int w;
+	TTF_SizeText(font, string, &w, NULL);
+
+	draw_text(x - (w / 2), y, string);
+}
+
 /*
  * startpoint
  */
@@ -65,6 +93,19 @@ int main() {
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		printf("Error initializing SDL:\n%s\n", SDL_GetError());
+		return 1;
+	}
+
+	if (TTF_Init() != 0) {
+		printf("Error initializing TTF:\n%s\n", TTF_GetError());
+		return 1;
+	}
+
+	font = TTF_OpenFont(FONT_FILENAME, 24);
+	// TTF_CloseFont(font);
+
+	if (!font) {
+		printf("Error loading engine font " FONT_FILENAME ".");
 		return 1;
 	}
 
