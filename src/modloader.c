@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "window.h"
 #include "character.h"
 
 static Character **c;
@@ -42,7 +41,7 @@ static Character *parse_character(FILE *file) {
 
 		} else if (HAS_PREFIX(line, "spritesheet=")) {
 
-			character->spritesheet = load_sprite(line + strlen("spritesheet="));
+			// character->spritesheet = load_sprite(line + strlen("spritesheet="));
 		}
 	}
 

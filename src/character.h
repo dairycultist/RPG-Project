@@ -6,7 +6,7 @@
 typedef struct {
 
     char name[CHARACTER_MAX_NAME_LEN];
-	Sprite *spritesheet;
+	// Sprite *spritesheet;
 
 } Character;
 
