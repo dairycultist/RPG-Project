@@ -4,20 +4,16 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 
 #include "window.h"
-#include "logic.h"
+#include "battle.h"
 
 #define FALSE 0
 #define TRUE 1
 
-#define FONT_FILENAME "src/vcr_osd_mono.ttf"
-
 /*
  * rendering
  */
-static TTF_Font* font;
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *display_buffer;
@@ -62,30 +58,6 @@ void free_sprite(Sprite *sprite) {
 	free(sprite);
 }
 
-void draw_text(int x, int y, const char *string) {
-
-	static SDL_Color white = { 255, 255, 255 };
-
-	SDL_Surface* text_surface = TTF_RenderText_Blended(font, string, white);
-	SDL_Texture* text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
-
-	SDL_Rect text_rect = { x, y };
-	TTF_SizeText(font, string, &text_rect.w, &text_rect.h);
-
-	SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
-
-	SDL_FreeSurface(text_surface);
-	SDL_DestroyTexture(text_texture);
-}
-
-void draw_text_centered(int x, int y, const char *string) {
-
-	int w;
-	TTF_SizeText(font, string, &w, NULL);
-
-	draw_text(x - (w / 2), y, string);
-}
-
 /*
  * startpoint
  */
@@ -96,20 +68,7 @@ int main() {
 		return 1;
 	}
 
-	if (TTF_Init() != 0) {
-		printf("Error initializing TTF:\n%s\n", TTF_GetError());
-		return 1;
-	}
-
-	font = TTF_OpenFont(FONT_FILENAME, 24);
-	// TTF_CloseFont(font);
-
-	if (!font) {
-		printf("Error loading engine font " FONT_FILENAME ".");
-		return 1;
-	}
-
-	window = SDL_CreateWindow("Feederia", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH, DISPLAY_HEIGHT, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("Battle Simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
 
 	if (!window) {
 		printf("Error creating window:\n%s\n", SDL_GetError());
@@ -131,13 +90,12 @@ int main() {
 	}
 
 	// initialize
-	logic_init();
+	battle_init();
 
 	// process events until window is closed
 	SDL_Event event;
-	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT};
+	SDL_Rect letterbox = {0, 0, DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2};
 
-	unsigned long time = 0;
 	int running = TRUE;
 
 	while (running) {
@@ -159,13 +117,10 @@ int main() {
 				letterbox.x = (event.window.data1 - letterbox.w) / 2;
 				letterbox.y = (event.window.data2 - letterbox.h) / 2;
 
-			} else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
-				
-				int x = (event.button.x - letterbox.x) * DISPLAY_WIDTH / letterbox.w;
-				int y = (event.button.y - letterbox.y) * DISPLAY_HEIGHT / letterbox.h;
+			} else if ((event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) && !event.key.repeat) {
 
-				if (x >= 0 && x < DISPLAY_WIDTH && y >= 0 && y < DISPLAY_HEIGHT)
-					logic_click(x, y);
+				// event.key.keysym.scancode
+				// SDL_SCANCODE_UP
 			}
 		}
 
@@ -175,7 +130,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 			// clear display_buffer to black
 		SDL_RenderClear(renderer);
 		
-		logic_tick(time++);											// logic + rendering to display_buffer
+		battle_tick();												// logic + rendering to display_buffer
 
 		SDL_SetRenderTarget(renderer, NULL); 						// reset render target back to window
 		SDL_RenderCopy(renderer, display_buffer, NULL, &letterbox); // render display_buffer

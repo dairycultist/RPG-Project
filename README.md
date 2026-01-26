@@ -1,15 +1,19 @@
-# Feederia
+# RPG Project
 
-enjoy games more :folfStrangl: !!!!!!!!!!!!!!!!
+room-based data-driven RPG engine, for stuff akin to the original LoZ (exit room-right, enter room-left)
 
 wahoo open source gaming
 
-- you can make custom characters (completely data!)
+enjoy games more :folfStrangl: !!!!!!!!!!!!!!!!
 
-![carry-out waffles](https://assets.bonappetit.com/photos/57bf31da4395c0582bb63167/master/pass/wowfulls-single-cone.jpg)
+![](https://preview.redd.it/pmd-origins-demo-v0-8-released-v0-sc3b4tdlbgyc1.png?width=638&format=png&auto=webp&s=656152e527f834198ef9f1bcdf6ff38aea05622b)
 
-![another](https://static.vecteezy.com/system/resources/previews/070/470/146/large_2x/person-holding-two-waffle-cones-with-ice-cream-one-in-each-hand-street-food-vendor-concept-with-brown-paper-wrapping-photo.jpg)
+![](https://static.wikia.nocookie.net/undertale/images/7/7d/Tem_Shop_soundtrack.png/revision/latest?cb=20151105132749)
+
+https://www.deviantart.com/shweetmagnet/art/2025-06-12-Natalie-5-1224856754
+
+## Credits
+
+[snivy sprites](https://sprites.pmdcollab.org/#/0495) and [applin sprites](https://sprites.pmdcollab.org/#/0840) (by Emmuffin) used for testing
 
 [Font](https://www.dafont.com/vcr-osd-mono.font)
-
-https://github.com/LuckyJack020/growth-academy

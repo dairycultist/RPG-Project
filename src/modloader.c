@@ -1,6 +1,6 @@
 /*
  * Searches recursively through /mod for game assets.
- * - Text files contain data detailing characters
+ * - Text files contain data detailing characters, items, actions, etc
  * - Images are sprites which are referenced by text files
  *
  * Mods can be conveniently organized into a folder with all their assets

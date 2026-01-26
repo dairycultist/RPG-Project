@@ -1,14 +1,9 @@
 #character
-name=Maisel
-spritesheet=maisel.png
-greet=generic
-pass=generic
-fail=generic
+name=Snivy
+spritesheet=snivy.png
 #end
 
-#dialogue
-name=generic
-Yummy ice cream!
-I like waffles!
-Hallo! ^w^
+#character
+name=Applin
+spritesheet=applin.png
 #end
