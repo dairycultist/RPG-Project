@@ -142,14 +142,15 @@ void present(AbstractWindow *abstract_window) {
 	/*
 	 * actual presentation
 	 */
-	SDL_SetRenderTarget(window->renderer, NULL); 										// reset render target back to window
-	SDL_RenderCopy(window->renderer, window->display_buffer, NULL, &window->letterbox);	// render display_buffer
-	SDL_RenderPresent(window->renderer); 												// present rendered content to screen
+	SDL_SetRenderTarget(window->renderer, NULL); 					// reset render target back to window
+	SDL_RenderCopy(window->renderer, window->display_buffer,		// render display_buffer to window
+		NULL, &window->letterbox);
+	SDL_RenderPresent(window->renderer); 							// present rendered content to screen
 
-	SDL_SetRenderDrawColor(window->renderer, 40, 40, 40, 255); 					// clear window to grey
+	SDL_SetRenderDrawColor(window->renderer, 40, 40, 40, 255); 		// clear window to grey
 	SDL_RenderClear(window->renderer);
-	SDL_SetRenderTarget(window->renderer, window->display_buffer); 				// set render target to display_buffer
-	SDL_SetRenderDrawColor(window->renderer, 0, 0, 0, 255); 					// clear display_buffer to black
+	SDL_SetRenderTarget(window->renderer, window->display_buffer); 	// set render target to display_buffer
+	SDL_SetRenderDrawColor(window->renderer, 0, 0, 0, 255); 		// clear display_buffer to black
 	SDL_RenderClear(window->renderer);
 
 	SDL_Delay(window->wait_time_ms);
