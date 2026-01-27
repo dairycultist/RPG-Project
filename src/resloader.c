@@ -20,25 +20,6 @@ static Resources *r;
 
 #define HAS_PREFIX(str, prefix) (!strncmp(str, prefix, strlen(prefix)))
 
-static void parse_hardware_config(FILE *file) {
-
-	char line[MAX_LINE_LENGTH];
-
-	while (fgets(line, MAX_LINE_LENGTH, file) && !HAS_PREFIX(line, "#end")) {
-
-		line[strlen(line) - 1] = '\0'; // remove \n
-
-		if (HAS_PREFIX(line, "w=")) {
-
-			sscanf(line + 2, "%d", &r->display_width);
-
-		} else if (HAS_PREFIX(line, "h=")) {
-
-			sscanf(line + 2, "%d", &r->display_height);
-		}
-	}
-}
-
 static Character *parse_character(FILE *file) {
 
 	Character *character = malloc(sizeof(Character));
@@ -83,14 +64,17 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 		return 0;
 
 	// parse (based on header) until EOF
-	char header[MAX_LINE_LENGTH];
+	char line[MAX_LINE_LENGTH];
 
-	while (fgets(header, MAX_LINE_LENGTH, file)) {
+	while (fgets(line, MAX_LINE_LENGTH, file)) {
 
-		if (HAS_PREFIX(header, "#hardware_config"))
-			parse_hardware_config(file);
+		if (HAS_PREFIX(line, "width="))
+			sscanf(line, "width=%d", &r->display_width);
 
-		if (HAS_PREFIX(header, "#character"))
+		else if (HAS_PREFIX(line, "height="))
+			sscanf(line, "height=%d", &r->display_height);
+
+		else if (HAS_PREFIX(line, "#character"))
 			r->characters[r->character_count++] = parse_character(file);
 	}
 

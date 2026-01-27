@@ -1,7 +1,5 @@
-#hardware_config
-w=240
-h=160
-#end
+width=240
+height=160
 
 #character
 name=Snivy
