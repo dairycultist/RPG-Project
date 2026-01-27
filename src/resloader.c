@@ -26,18 +26,18 @@ static Character *parse_character(FILE *file) {
 
 	char line[MAX_LINE_LENGTH];
 
-	// parse out parameters, ignoring invalid lines, until #end
-	while (fgets(line, MAX_LINE_LENGTH, file) && !HAS_PREFIX(line, "#end")) {
+	// parse out parameters, ignoring invalid lines, until de-indent
+	while (fgets(line, MAX_LINE_LENGTH, file) && HAS_PREFIX(line, "\t")) {
 
 		line[strlen(line) - 1] = '\0'; // remove \n
 
-		if (HAS_PREFIX(line, "name=")) {
+		if (HAS_PREFIX(line, "\tname=")) {
 
-			memcpy(character->name, line + strlen("name="), strlen(line + strlen("name=")));
+			memcpy(character->name, line + strlen("\tname="), strlen(line + strlen("\tname=")));
 
-		} else if (HAS_PREFIX(line, "spritesheet=")) {
+		} else if (HAS_PREFIX(line, "\tspritesheet=")) {
 
-			// character->spritesheet = load_sprite(line + strlen("spritesheet="));
+			// character->spritesheet = load_sprite(line + strlen("\tspritesheet="));
 		}
 	}
 
@@ -74,7 +74,7 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 		else if (HAS_PREFIX(line, "height="))
 			sscanf(line, "height=%d", &r->display_height);
 
-		else if (HAS_PREFIX(line, "#character"))
+		else if (HAS_PREFIX(line, "character:"))
 			r->characters[r->character_count++] = parse_character(file);
 	}
 

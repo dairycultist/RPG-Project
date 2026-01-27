@@ -1,12 +1,10 @@
 width=240
 height=160
 
-#character
-name=Snivy
-spritesheet=snivy.png
-#end
+character:
+	name=Snivy
+	spritesheet=snivy.png
 
-#character
-name=Applin
-spritesheet=applin.png
-#end
+character:
+	name=Applin
+	spritesheet=applin.png
