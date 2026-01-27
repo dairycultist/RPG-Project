@@ -9,18 +9,18 @@
 
 typedef struct {
 
-    char name[CHARACTER_MAX_NAME_LEN];
-	// Sprite *spritesheet;
-
-} Character;
-
-typedef struct {
-
     int display_width, display_height;
 	// probably also stuff for input
 
 } HardwareConfig;
 
-void load_resources(Character ***characters, int *character_count);
+typedef struct {
+
+    char name[CHARACTER_MAX_NAME_LEN];
+	// Sprite *spritesheet;
+
+} Character;
+
+void load_resources(HardwareConfig *hardware_config, Character ***characters, int *character_count);
 
 #endif

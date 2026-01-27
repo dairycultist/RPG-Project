@@ -11,6 +11,7 @@
 
 #include "resloader.h"
 
+static HardwareConfig *hc;
 static Character **c;
 static int c_count;
 
@@ -20,6 +21,25 @@ static int c_count;
 #define MAX_CHARACTERS 8
 
 #define HAS_PREFIX(str, prefix) (!strncmp(str, prefix, strlen(prefix)))
+
+static void parse_hardware_config(FILE *file, HardwareConfig *hardware_config) {
+
+	char line[MAX_LINE_LENGTH];
+
+	while (fgets(line, MAX_LINE_LENGTH, file) && !HAS_PREFIX(line, "#end")) {
+
+		line[strlen(line) - 1] = '\0'; // remove \n
+
+		if (HAS_PREFIX(line, "w=")) {
+
+			sscanf(line + 2, "%d", &hardware_config->display_width);
+
+		} else if (HAS_PREFIX(line, "h=")) {
+
+			sscanf(line + 2, "%d", &hardware_config->display_height);
+		}
+	}
+}
 
 static Character *parse_character(FILE *file) {
 
@@ -69,6 +89,9 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 
 	while (fgets(header, MAX_LINE_LENGTH, file)) {
 
+		if (HAS_PREFIX(header, "#hardware_config"))
+			parse_hardware_config(file, hc);
+
 		if (HAS_PREFIX(header, "#character"))
 			c[c_count++] = parse_character(file);
 	}
@@ -79,11 +102,12 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 	return 0;
 }
 
-void load_resources(Character ***characters, int *character_count) {
+void load_resources(HardwareConfig *hardware_config, Character ***characters, int *character_count) {
 
 	*characters = malloc(sizeof(Character *) * MAX_CHARACTERS);
 
 	// prep static buffers
+	hc = hardware_config;
 	c = *characters;
 	c_count = 0;
 
@@ -96,7 +120,7 @@ void load_resources(Character ***characters, int *character_count) {
 
 		printf("Loaded:\n");
 
-		printf("  Hardware config:\n    dim: %dx%d\n", 10, 10);
+		printf("  Hardware config:\n    dim: %dx%d\n", hardware_config->display_width, hardware_config->display_height);
 
 		printf("  Characters (%d):\n", c_count);
 		
