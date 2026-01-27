@@ -1,5 +1,5 @@
 /*
- * hardware.c is a IO abstraction layer (provides a window, rendering tools, and input reports)
+ * hardware.c is a IO abstraction layer (provides a display area, rendering tools, and input reports)
  */
 
 #include <SDL2/SDL.h>
@@ -7,59 +7,16 @@
 
 #include "hardware.h"
 
-#define FALSE 0
-#define TRUE 1
-
 /*
- * rendering
+ * AbstractWindow
  */
-// Sprite *load_sprite(const char *path) {
-
-// 	Sprite *sprite = malloc(sizeof(Sprite));
-
-// 	sprite->sdl_texture = IMG_LoadTexture(renderer, path);
-
-// 	if (!sprite->sdl_texture) {
-
-// 		printf("Could not load %s (non-fatal error)\n", path);
-// 		sprite->w = 0;
-// 		sprite->h = 0;
-// 		return sprite;
-// 	}
-
-// 	SDL_QueryTexture(sprite->sdl_texture, NULL, NULL, &sprite->w, &sprite->h);
-
-// 	return sprite;
-// }
-
-// void draw_sprite(Sprite *sprite, int x, int y, int BOOL_flip) {
-
-// 	SDL_Rect dst_rect = { x, y, sprite->w, sprite->h };
-
-// 	SDL_RenderCopyEx(renderer, sprite->sdl_texture, NULL, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-// }
-
-// void draw_subsprite(Sprite *sprite, int x, int y, int sample_x, int sample_y, int sample_w, int sample_h, int BOOL_flip) {
-
-// 	SDL_Rect src_rect = { sample_x, sample_y, sample_w, sample_h };
-// 	SDL_Rect dst_rect = { x, y, sample_w, sample_h };
-
-// 	SDL_RenderCopyEx(renderer, sprite->sdl_texture, &src_rect, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
-// }
-
-// void free_sprite(Sprite *sprite) {
-	
-// 	SDL_DestroyTexture(sprite->sdl_texture);
-// 	free(sprite);
-// }
-
 typedef struct {
 
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	SDL_Texture *display_buffer;
-	int width;
-	int height;
+	int width; // of display_buffer
+	int height; // of display_buffer
 	int wait_time_ms;
 	SDL_Rect letterbox;
 
@@ -164,4 +121,65 @@ void destroy_window(AbstractWindow *abstract_window) {
 	SDL_DestroyWindow(window->window);
 	// also destroy window->display_buffer
 	SDL_Quit();
+}
+
+/*
+ * AbstractSprite loading, drawing, and freeing
+ */
+typedef struct {
+
+    SDL_Texture *sdl_texture;
+    int w;
+    int h;
+
+} Sprite;
+
+AbstractSprite *load_sprite(AbstractWindow *abstract_window, const char *path) {
+
+	Sprite *sprite = malloc(sizeof(Sprite));
+	Window *window = (Window *) abstract_window;
+
+	sprite->sdl_texture = IMG_LoadTexture(window->renderer, path);
+
+	if (!sprite->sdl_texture) {
+
+		printf("Could not load %s (non-fatal error)\n", path);
+		sprite->w = 0;
+		sprite->h = 0;
+		return sprite;
+	}
+
+	SDL_QueryTexture(sprite->sdl_texture, NULL, NULL, &sprite->w, &sprite->h);
+
+	return sprite;
+}
+
+void draw_sprite(AbstractWindow *abstract_window, AbstractSprite *abstract_sprite, int x, int y, int BOOL_flip) {
+
+	Sprite *sprite = (Sprite *) abstract_sprite;
+	Window *window = (Window *) abstract_window;
+
+	SDL_Rect dst_rect = { x, y, sprite->w, sprite->h };
+
+	SDL_RenderCopyEx(window->renderer, sprite->sdl_texture, NULL, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+}
+
+void draw_subsprite(AbstractWindow *abstract_window, AbstractSprite *abstract_sprite, int x, int y, int sample_x, int sample_y, int sample_w, int sample_h, int BOOL_flip) {
+
+	Sprite *sprite = (Sprite *) abstract_sprite;
+	Window *window = (Window *) abstract_window;
+
+	SDL_Rect src_rect = { sample_x, sample_y, sample_w, sample_h };
+	SDL_Rect dst_rect = { x, y, sample_w, sample_h };
+
+	SDL_RenderCopyEx(window->renderer, sprite->sdl_texture, &src_rect, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+}
+
+void free_sprite(AbstractWindow *abstract_window, AbstractSprite *abstract_sprite) {
+
+	Sprite *sprite = (Sprite *) abstract_sprite;
+	Window *window = (Window *) abstract_window;
+	
+	SDL_DestroyTexture(sprite->sdl_texture);
+	free(sprite);
 }
