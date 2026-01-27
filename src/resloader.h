@@ -6,14 +6,6 @@
 /*
  * resource types
  */
-
-typedef struct {
-
-    int display_width, display_height;
-	// probably also stuff for input
-
-} HardwareConfig;
-
 typedef struct {
 
     char name[CHARACTER_MAX_NAME_LEN];
@@ -21,6 +13,19 @@ typedef struct {
 
 } Character;
 
-void load_resources(HardwareConfig *hardware_config, Character ***characters, int *character_count);
+/*
+ * resource wrapper
+ */
+typedef struct {
+
+    int display_width, display_height;
+	// probably also stuff for input
+
+	Character **characters; // array of character pointers
+	int character_count;
+
+} Resources;
+
+void load_resources(Resources *resources);
 
 #endif
