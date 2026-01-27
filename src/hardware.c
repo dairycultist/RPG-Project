@@ -119,7 +119,7 @@ void destroy_window(AbstractWindow *abstract_window) {
 
 	SDL_DestroyRenderer(window->renderer);
 	SDL_DestroyWindow(window->window);
-	// also destroy window->display_buffer
+	SDL_DestroyTexture(window->display_buffer);
 	SDL_Quit();
 }
 
@@ -137,9 +137,8 @@ typedef struct {
 AbstractSprite *load_sprite(AbstractWindow *abstract_window, const char *path) {
 
 	Sprite *sprite = malloc(sizeof(Sprite));
-	Window *window = (Window *) abstract_window;
 
-	sprite->sdl_texture = IMG_LoadTexture(window->renderer, path);
+	sprite->sdl_texture = IMG_LoadTexture(((Window *) abstract_window)->renderer, path);
 
 	if (!sprite->sdl_texture) {
 
@@ -156,30 +155,43 @@ AbstractSprite *load_sprite(AbstractWindow *abstract_window, const char *path) {
 
 void draw_sprite(AbstractWindow *abstract_window, AbstractSprite *abstract_sprite, int x, int y, int BOOL_flip) {
 
-	Sprite *sprite = (Sprite *) abstract_sprite;
-	Window *window = (Window *) abstract_window;
+	SDL_Rect dst_rect = {
+		x, y,
+		((Sprite *) abstract_sprite)->w,
+		((Sprite *) abstract_sprite)->h
+	};
 
-	SDL_Rect dst_rect = { x, y, sprite->w, sprite->h };
-
-	SDL_RenderCopyEx(window->renderer, sprite->sdl_texture, NULL, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+	SDL_RenderCopyEx(
+		((Window *) abstract_window)->renderer,
+		((Sprite *) abstract_sprite)->sdl_texture,
+		NULL,
+		&dst_rect,
+		0.0,
+		NULL,
+		BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE
+	);
 }
 
 void draw_subsprite(AbstractWindow *abstract_window, AbstractSprite *abstract_sprite, int x, int y, int sample_x, int sample_y, int sample_w, int sample_h, int BOOL_flip) {
 
-	Sprite *sprite = (Sprite *) abstract_sprite;
-	Window *window = (Window *) abstract_window;
-
 	SDL_Rect src_rect = { sample_x, sample_y, sample_w, sample_h };
 	SDL_Rect dst_rect = { x, y, sample_w, sample_h };
 
-	SDL_RenderCopyEx(window->renderer, sprite->sdl_texture, &src_rect, &dst_rect, 0.0, NULL, BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+	SDL_RenderCopyEx(
+		((Window *) abstract_window)->renderer,
+		((Sprite *) abstract_sprite)->sdl_texture,
+		&src_rect,
+		&dst_rect,
+		0.0,
+		NULL,
+		BOOL_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE
+	);
 }
 
 void free_sprite(AbstractWindow *abstract_window, AbstractSprite *abstract_sprite) {
 
-	Sprite *sprite = (Sprite *) abstract_sprite;
-	Window *window = (Window *) abstract_window;
+	// abstract_window isn't used in this implementation; it's just here for compatibility
 	
-	SDL_DestroyTexture(sprite->sdl_texture);
-	free(sprite);
+	SDL_DestroyTexture(((Sprite *) abstract_sprite)->sdl_texture);
+	free(abstract_sprite);
 }
