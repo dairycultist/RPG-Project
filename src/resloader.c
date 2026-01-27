@@ -1,10 +1,7 @@
 /*
- * Searches recursively through /mod for game assets.
- * - Text files contain data detailing characters, items, actions, etc
+ * Searches recursively through /res for game assets.
+ * - Text file(s) containing data detailing characters, items, actions, rooms, etc
  * - Images are sprites which are referenced by text files
- *
- * Mods can be conveniently organized into a folder with all their assets
- * together, and may separate data into multiple text files if desired.
  */
 
 #include <ftw.h>
@@ -12,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "character.h"
+#include "resloader.h"
 
 static Character **c;
 static int c_count;
@@ -82,7 +79,7 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 	return 0;
 }
 
-void load_mods(Character ***characters, int *character_count) {
+void load_resources(Character ***characters, int *character_count) {
 
 	*characters = malloc(sizeof(Character *) * MAX_CHARACTERS);
 
@@ -90,8 +87,8 @@ void load_mods(Character ***characters, int *character_count) {
 	c = *characters;
 	c_count = 0;
 
-	// process mod files
-	if (nftw("./mod/", file_callback, 4, FTW_CHDIR)) {
+	// process res files
+	if (nftw("./res/", file_callback, 4, FTW_CHDIR)) {
 
 		printf("Something went wrong during loading!\n");
 

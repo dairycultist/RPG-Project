@@ -1,10 +1,10 @@
 .PHONY: run clean
 
-demo: src/*
-	gcc -o demo src/*.c -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
+demo.out: src/*
+	gcc -o demo.out src/*.c -lSDL2_image $(shell sdl2-config --cflags) $(shell sdl2-config --libs)
 
-run: demo
-	./demo
+run: demo.out
+	./demo.out
 
 clean:
-	rm demo
+	rm demo.out
