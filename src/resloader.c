@@ -95,6 +95,9 @@ void load_resources(Character ***characters, int *character_count) {
 	} else {
 
 		printf("Loaded:\n");
+
+		printf("  Hardware config:\n    dim: %dx%d\n", 10, 10);
+
 		printf("  Characters (%d):\n", c_count);
 		
 		for (int i = 0; i < c_count; i++)
