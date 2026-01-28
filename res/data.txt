@@ -1,3 +1,9 @@
+; Objects are notated with a colon. There can be many objects of the same type per block.
+; Parameters are notated with an equals sign. There should only be one parameter with a given key per block.
+; Objects contain parameters. Objects can also contain other objects (such as with rooms and colliders).
+; Indentation, spacing, and line breaks should be exact (my code is not very good).
+; The top-level block itself behaves like an object.
+
 width=240
 height=160
 
