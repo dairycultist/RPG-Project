@@ -12,6 +12,7 @@
 #include "resloader.h"
 
 static Resources *r;
+static AbstractWindow *aw;
 
 // includes null terminator
 #define MAX_LINE_LENGTH 80
@@ -37,7 +38,7 @@ static Character *parse_character(FILE *file) {
 
 		} else if (HAS_PREFIX(line, "\tspritesheet=")) {
 
-			// character->spritesheet = load_sprite(line + strlen("\tspritesheet="));
+			character->spritesheet = load_sprite(aw, line + strlen("\tspritesheet="));
 		}
 	}
 
@@ -84,7 +85,7 @@ static int file_callback(const char *fpath, const struct stat *sb, int type, str
 	return 0;
 }
 
-void load_resources(Resources *resources) {
+void load_resources(AbstractWindow *abstract_window, Resources *resources) {
 
 	// initialize output parameter
 	resources->display_width = 100;
@@ -92,8 +93,9 @@ void load_resources(Resources *resources) {
 	resources->characters = malloc(sizeof(Character *) * MAX_CHARACTERS);
 	resources->character_count = 0;
 
-	// prep static reference
+	// prep static references
 	r = resources;
+	aw = abstract_window;
 
 	// process res files
 	if (nftw("./res/", file_callback, 4, FTW_CHDIR)) {
@@ -112,6 +114,7 @@ void load_resources(Resources *resources) {
 			printf("    - %s\n", r->characters[i]->name);
 	}
 
-	// clear static reference
+	// clear static references
 	r = NULL;
+	aw = NULL;
 }

@@ -1,6 +1,8 @@
 #ifndef RESLOADER_H
 #define RESLOADER_H
 
+#include "hardware.h"
+
 #define CHARACTER_MAX_NAME_LEN 20
 
 /*
@@ -9,7 +11,7 @@
 typedef struct {
 
     char name[CHARACTER_MAX_NAME_LEN];
-	// Sprite *spritesheet;
+	AbstractSprite *spritesheet;
 
 } Character;
 
@@ -26,6 +28,6 @@ typedef struct {
 
 } Resources;
 
-void load_resources(Resources *resources);
+void load_resources(AbstractWindow *abstract_window, Resources *resources);
 
 #endif
